@@ -7,6 +7,7 @@ import { ExternalLink, Loader2 } from "lucide-react";
 import { KanjiListItem } from "@/types/kanji";
 import { AudioButton } from "./AudioButton";
 import { Button } from "@/components/ui/button";
+import { KanjiStrokeOrder } from "./KanjiStrokeOrder";
 
 const getKanjiStrokeOrderUrl = (kanji: string) => {
   const cp = kanji.codePointAt(0) ?? 0;
@@ -171,14 +172,7 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-center p-6 bg-white rounded-lg border border-primary/10">
-                <img
-                  src={strokeUrl}
-                  alt={`Stroke order diagram for ${entry.char}`}
-                  className="max-w-full h-auto animate-fade-in hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-xl"
-                  style={{ maxHeight: "400px" }}
-                />
-              </div>
+              <KanjiStrokeOrder kanji={entry.char} strokeUrl={strokeUrl} />
             </CardContent>
           </Card>
 
