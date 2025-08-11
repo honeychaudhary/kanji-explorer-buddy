@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Navigation } from "./Navigation";
 import { SakuraBackground } from "./SakuraBackground";
 import { Search } from "lucide-react";
+import { useProgress } from "@/hooks/useProgress";
 
 const matchesSearch = (char: string, meanings: string[], on: string[], kun: string[], q: string) => {
   const query = q.trim().toLowerCase();
@@ -27,6 +28,7 @@ export default function KanjiExplorer() {
   const { loading, error, getLevelItems } = useKanjiData();
 
   const items = getLevelItems(level);
+  const { getStatus } = useProgress();
 
   const filtered = useMemo(() => {
     return items.filter((k) => matchesSearch(k.char, k.meanings, k.on, k.kun, search));
@@ -97,26 +99,42 @@ export default function KanjiExplorer() {
             </div>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-              {filtered.map((entry) => (
-                <KanjiDetailDialog key={`${entry.char}-N${entry.jlpt}`} entry={entry}>
-                  <Card className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 bg-card/80 backdrop-blur-sm border-primary/10 hover:border-primary/30">
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="text-5xl leading-none font-japanese group-hover:text-primary transition-colors">
-                          {entry.char}
+              {filtered.map((entry) => {
+                const status = getStatus(entry.char);
+                const statusClasses =
+                  status === "learned"
+                    ? "bg-primary/10 border-primary/40"
+                    : status === "learning"
+                    ? "bg-secondary/10 border-secondary/40"
+                    : "bg-card/80 border-primary/10";
+                return (
+                  <KanjiDetailDialog key={`${entry.char}-N${entry.jlpt}`} entry={entry}>
+                    <Card className={`group cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 backdrop-blur-sm hover:border-primary/30 ${statusClasses}`}>
+                      <CardContent className="p-6">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="text-5xl leading-none font-japanese group-hover:text-primary transition-colors">
+                            {entry.char}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className="bg-japanese-gold/20 text-japanese-black border-japanese-gold/30">
+                              N{entry.jlpt}
+                            </Badge>
+                            {status !== "not_visited" && (
+                              <Badge variant="outline" className="text-xs">
+                                {status === "learning" ? "Learning" : "Learned"}
+                              </Badge>
+                            )}
+                          </div>
                         </div>
-                        <Badge variant="secondary" className="bg-japanese-gold/20 text-japanese-black border-japanese-gold/30">
-                          N{entry.jlpt}
-                        </Badge>
-                      </div>
-                      <div className="text-sm text-muted-foreground line-clamp-2">
-                        {entry.meanings.slice(0, 3).join(", ")}
-                        {entry.meanings.length > 3 && "..."}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </KanjiDetailDialog>
-              ))}
+                        <div className="text-sm text-muted-foreground line-clamp-2">
+                          {entry.meanings.slice(0, 3).join(", ")}
+                          {entry.meanings.length > 3 && "..."}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </KanjiDetailDialog>
+                );
+              })}
             </div>
           )}
 

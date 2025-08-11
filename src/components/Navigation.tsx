@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { JLPT_LEVELS, JLPTString } from "@/types/kanji";
+import { AuthMenu } from "@/components/AuthMenu";
 
 interface NavigationProps {
   currentLevel?: JLPTString;
@@ -68,6 +69,8 @@ export function Navigation({ currentLevel, onLevelChange, showLevelSelector = fa
                 </SelectContent>
               </Select>
             )}
+
+            <AuthMenu />
           </div>
 
           {/* Mobile menu button */}
@@ -130,6 +133,10 @@ export function Navigation({ currentLevel, onLevelChange, showLevelSelector = fa
                 </Select>
               </div>
             )}
+
+            <div className="px-3 py-2">
+              <AuthMenu />
+            </div>
           </div>
         )}
       </div>

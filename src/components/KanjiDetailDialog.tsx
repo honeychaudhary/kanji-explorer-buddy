@@ -8,6 +8,7 @@ import { KanjiListItem } from "@/types/kanji";
 import { AudioButton } from "./AudioButton";
 import { Button } from "@/components/ui/button";
 import { KanjiStrokeOrder } from "./KanjiStrokeOrder";
+import { useProgress } from "@/hooks/useProgress";
 
 const getKanjiStrokeOrderUrl = (kanji: string) => {
   const cp = kanji.codePointAt(0) ?? 0;
@@ -43,6 +44,9 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
   }, [entry.char]);
 
   const loading = examples === null;
+  const { getStatus, setStatus } = useProgress();
+  const currentStatus = getStatus(entry.char);
+
 
   return (
     <Dialog>
@@ -65,7 +69,7 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
                 {entry.meanings[0]}
               </div>
             </div>
-            <div className="flex justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-3 items-center">
               <Badge variant="outline" className="text-lg px-4 py-2 bg-japanese-gold/20 border-japanese-gold/50">
                 JLPT N{entry.jlpt}
               </Badge>
@@ -77,6 +81,21 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
               >
                 Play
               </AudioButton>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => setStatus(entry.char, "learning")}
+                  className={currentStatus === "learning" ? "bg-secondary/20 border-secondary/40" : ""}
+                >
+                  Mark Learning
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => setStatus(entry.char, "learned")}
+                  className={currentStatus === "learned" ? "bg-primary/20 border-primary/40" : ""}
+                >
+                  Mark Learned
+                </Button>
+                {currentStatus !== "not_visited" && (
+                  <Button variant="ghost" size="sm" onClick={() => setStatus(entry.char, "not_visited")}>Reset</Button>
+                )}
+              </div>
             </div>
           </div>
 

@@ -125,7 +125,7 @@ export const KanjiStrokeOrder = ({ kanji, strokeUrl }: KanjiStrokeOrderProps) =>
 
   return (
     <div
-      className="w-full flex justify-center p-6 bg-white rounded-lg border border-primary/10 hover-scale"
+      className="w-full flex justify-center p-6 bg-card rounded-lg border border-primary/10 hover-scale"
       aria-label={`Animated stroke order for ${kanji}. Click to replay.`}
     >
       <div ref={containerRef} style={{ maxHeight: 400 }} />
