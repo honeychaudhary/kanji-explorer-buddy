@@ -1,11 +1,7 @@
 import KanjiExplorer from "@/components/KanjiExplorer";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-background">
-      <KanjiExplorer />
-    </div>
-  );
+  return <KanjiExplorer />;
 };
 
 export default Index;

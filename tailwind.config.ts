@@ -61,6 +61,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				japanese: {
+					red: 'hsl(var(--japanese-red))',
+					gold: 'hsl(var(--japanese-gold))',
+					black: 'hsl(var(--japanese-black))',
+					cream: 'hsl(var(--japanese-cream))',
+					sakura: 'hsl(var(--sakura-pink))',
+					wave: 'hsl(var(--wave-blue))'
 				}
 			},
 			borderRadius: {
@@ -84,11 +92,48 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fall': {
+					'0%': {
+						transform: 'translateY(-100vh) rotate(0deg)',
+						opacity: '0.7'
+					},
+					'100%': {
+						transform: 'translateY(100vh) rotate(360deg)',
+						opacity: '0'
+					}
+				},
+				'fade-in-up': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'scale-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'scale(0.9)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'scale(1)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fall': 'fall linear infinite',
+				'fade-in-up': 'fade-in-up 0.5s ease-out',
+				'scale-in': 'scale-in 0.3s ease-out'
+			},
+			fontFamily: {
+				'japanese': ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'sans-serif'],
+				'japanese-serif': ['Noto Serif JP', 'Times New Roman', 'serif']
 			}
 		}
 	},

@@ -8,89 +8,145 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Japanese-inspired color palette */
+    --background: 44 40% 97%; /* Cream/off-white like washi paper */
+    --foreground: 0 0% 8%; /* Near black for text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%; /* Pure white for cards */
+    --card-foreground: 0 0% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 8%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Deep red (Japanese red/aka) */
+    --primary: 351 83% 37%; /* Deep traditional red */
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Gold/amber accents */
+    --secondary: 45 100% 50%; /* Gold */
+    --secondary-foreground: 0 0% 8%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 44 30% 94%; /* Light cream */
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 351 83% 37%; /* Same as primary for consistency */
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 44 20% 88%; /* Subtle warm border */
+    --input: 44 20% 88%;
+    --ring: 351 83% 37%; /* Red focus ring */
 
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* Slightly more rounded for softer feel */
 
-    --sidebar-background: 0 0% 98%;
+    /* Japanese red/gold themed sidebar */
+    --sidebar-background: 351 83% 37%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 45 100% 50%;
+    --sidebar-primary-foreground: 0 0% 8%;
+    --sidebar-accent: 351 70% 45%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 351 60% 30%;
+    --sidebar-ring: 45 100% 50%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Custom Japanese theme colors */
+    --japanese-red: 351 83% 37%;
+    --japanese-gold: 45 100% 50%;
+    --japanese-black: 0 0% 8%;
+    --japanese-cream: 44 40% 97%;
+    --sakura-pink: 330 60% 85%;
+    --wave-blue: 215 85% 35%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark Japanese theme */
+    --background: 0 0% 8%; /* Dark charcoal */
+    --foreground: 44 40% 97%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 12%; /* Dark card background */
+    --card-foreground: 44 40% 97%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 44 40% 97%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 351 70% 45%; /* Darker red for dark mode */
+    --primary-foreground: 44 40% 97%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 45 80% 40%; /* Darker gold */
+    --secondary-foreground: 44 40% 97%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 351 70% 45%;
+    --accent-foreground: 44 40% 97%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 44 40% 97%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 351 70% 45%;
+    
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 44 40% 97%;
+    --sidebar-primary: 45 80% 40%;
+    --sidebar-primary-foreground: 0 0% 8%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 44 40% 97%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 45 80% 40%;
+
+    /* Dark theme Japanese colors */
+    --japanese-red: 351 70% 45%;
+    --japanese-gold: 45 80% 40%;
+    --japanese-black: 0 0% 8%;
+    --japanese-cream: 44 40% 97%;
+    --sakura-pink: 330 40% 65%;
+    --wave-blue: 215 70% 45%;
+  }
+}
+
+/* Sakura petals animation */
+@layer components {
+  .sakura-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .sakura-petal {
+    position: absolute;
+    background: hsl(var(--sakura-pink));
+    border-radius: 50% 0 50% 0;
+    animation: fall linear infinite;
+    opacity: 0.7;
+  }
+
+  .wave-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='hsl(215, 85%25, 35%25)' stroke-width='0.5' stroke-opacity='0.1'%3E%3Cpath d='M20 20c0-11 9-20 20-20s20 9 20 20-9 20-20 20-20-9-20-20z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .paper-texture {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='hsl(44, 20%25, 88%25)' fill-opacity='0.03'%3E%3Cpath d='m30 30-15-15h30l-15 15zm0 0 15-15v30l-15-15zm0 0-15 15v-30l15 15zm0 0 15 15h-30l15-15z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
   }
 }
 
@@ -101,5 +157,10 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Serif JP', 'Times New Roman', serif;
   }
 }
