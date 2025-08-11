@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -143,6 +143,39 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
               </Card>
             )}
           </div>
+
+          {/* Stroke Order */}
+          <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <CardHeader>
+              <CardTitle className="font-japanese-serif text-xl text-primary flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <span className="text-2xl">筆</span>
+                  Stroke Order
+                </span>
+                <Button variant="outline" size="sm" asChild>
+                  <a
+                    href={strokeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                  >
+                    Full Size
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-center p-6 bg-white rounded-lg border border-primary/10">
+                <img
+                  src={strokeUrl}
+                  alt={`Stroke order diagram for ${entry.char}`}
+                  className="max-w-full h-auto"
+                  style={{ maxHeight: "400px" }}
+                />
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Example Words with Audio */}
           <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
