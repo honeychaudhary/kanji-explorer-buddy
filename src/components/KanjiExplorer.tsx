@@ -3,33 +3,32 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { KANJI_DATA, JLPT_LEVELS, KanjiEntry } from "@/data/kanji";
+import { JLPT_LEVELS, JLPTString } from "@/types/kanji";
+import { useKanjiData } from "@/hooks/useKanjiData";
 import { KanjiDetailDialog } from "./KanjiDetailDialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const matchesSearch = (entry: KanjiEntry, q: string) => {
+const matchesSearch = (char: string, meanings: string[], on: string[], kun: string[], q: string) => {
   const query = q.trim().toLowerCase();
   if (!query) return true;
   return (
-    entry.char.includes(query) ||
-    entry.meanings.join(" ").toLowerCase().includes(query) ||
-    entry.onyomi.join(" ").toLowerCase().includes(query) ||
-    entry.kunyomi.join(" ").toLowerCase().includes(query) ||
-    entry.examples.some(
-      (e) =>
-        e.word.includes(query) ||
-        e.reading.toLowerCase().includes(query) ||
-        e.meaning.toLowerCase().includes(query)
-    )
+    char.includes(query) ||
+    meanings.join(" ").toLowerCase().includes(query) ||
+    on.join(" ").toLowerCase().includes(query) ||
+    kun.join(" ").toLowerCase().includes(query)
   );
 };
 
 export default function KanjiExplorer() {
-  const [level, setLevel] = useState<string>(JLPT_LEVELS[0]);
+  const [level, setLevel] = useState<JLPTString>(JLPT_LEVELS[0]);
   const [search, setSearch] = useState("");
+  const { loading, error, getLevelItems } = useKanjiData();
+
+  const items = getLevelItems(level);
 
   const filtered = useMemo(() => {
-    return KANJI_DATA.filter((k) => k.level === level && matchesSearch(k, search));
-  }, [level, search]);
+    return items.filter((k) => matchesSearch(k.char, k.meanings, k.on, k.kun, search));
+  }, [items, search]);
 
   return (
     <main className="container py-10">
@@ -42,7 +41,7 @@ export default function KanjiExplorer() {
 
       <section aria-label="Filters" className="mb-8">
         <div className="grid gap-3 sm:grid-cols-[200px_1fr]">
-          <Select value={level} onValueChange={setLevel}>
+          <Select value={level} onValueChange={(v) => setLevel(v as JLPTString)}>
             <SelectTrigger aria-label="Select JLPT Level">
               <SelectValue placeholder="Select JLPT level" />
             </SelectTrigger>
@@ -57,33 +56,52 @@ export default function KanjiExplorer() {
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by meaning, reading, or example..."
+            placeholder="Search by meaning or reading..."
             aria-label="Search kanji"
           />
         </div>
       </section>
 
+      {error && (
+        <p className="text-destructive text-sm mb-6" role="alert">
+          Failed to load full kanji list. Showing nothing.
+        </p>
+      )}
+
       <section aria-label={`Kanji list for JLPT ${level}`}>
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filtered.map((entry) => (
-            <KanjiDetailDialog key={`${entry.char}-${entry.level}`} entry={entry}>
-              <Card className="cursor-pointer transition-shadow hover:shadow-md">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="text-5xl leading-none">{entry.char}</div>
-                    <Badge variant="secondary">{entry.level}</Badge>
-                  </div>
-                  <div className="mt-2 text-sm text-muted-foreground">
-                    {entry.meanings.join(", ")}
-                  </div>
+        {loading ? (
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <Card key={i}>
+                <CardContent className="p-4 space-y-3">
+                  <Skeleton className="h-10 w-20" />
+                  <Skeleton className="h-4 w-40" />
                 </CardContent>
               </Card>
-            </KanjiDetailDialog>
-          ))}
-          {filtered.length === 0 && (
-            <p className="text-muted-foreground">No results. Try a different search.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {filtered.map((entry) => (
+              <KanjiDetailDialog key={`${entry.char}-N${entry.jlpt}`} entry={entry}>
+                <Card className="cursor-pointer transition-shadow hover:shadow-md">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="text-5xl leading-none">{entry.char}</div>
+                      <Badge variant="secondary">N{entry.jlpt}</Badge>
+                    </div>
+                    <div className="mt-2 text-sm text-muted-foreground truncate">
+                      {entry.meanings.join(", ")}
+                    </div>
+                  </CardContent>
+                </Card>
+              </KanjiDetailDialog>
+            ))}
+            {filtered.length === 0 && (
+              <p className="text-muted-foreground">No results. Try a different search.</p>
+            )}
+          </div>
+        )}
       </section>
     </main>
   );
