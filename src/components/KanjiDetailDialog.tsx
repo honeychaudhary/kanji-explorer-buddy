@@ -56,8 +56,13 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
         <div className="space-y-8">
           {/* Header */}
           <div className="text-center space-y-6 animate-scale-in">
-            <div className="text-8xl md:text-9xl font-japanese text-primary leading-none">
-              {entry.char}
+            <div className="flex items-center justify-center gap-6 flex-wrap">
+              <div className="text-8xl md:text-9xl font-japanese text-primary leading-none">
+                {entry.char}
+              </div>
+              <div className="text-2xl md:text-3xl text-secondary font-medium bg-japanese-cream/30 px-4 py-2 rounded-lg border border-secondary/20">
+                {entry.meanings[0]}
+              </div>
             </div>
             <div className="flex justify-center gap-3">
               <Badge variant="outline" className="text-lg px-4 py-2 bg-japanese-gold/20 border-japanese-gold/50">
@@ -170,7 +175,7 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
                 <img
                   src={strokeUrl}
                   alt={`Stroke order diagram for ${entry.char}`}
-                  className="max-w-full h-auto"
+                  className="max-w-full h-auto animate-fade-in hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-xl"
                   style={{ maxHeight: "400px" }}
                 />
               </div>
