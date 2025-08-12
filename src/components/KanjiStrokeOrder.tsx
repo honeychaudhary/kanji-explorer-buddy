@@ -85,7 +85,7 @@ export const KanjiStrokeOrder = ({ kanji, strokeUrl }: KanjiStrokeOrderProps) =>
         svg.removeAttribute("height");
         svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
         svg.style.width = "100%";
-        svg.style.maxWidth = "480px";
+        svg.style.maxWidth = "360px";
         svg.style.height = "auto";
         svg.style.display = "block";
         svg.classList.add("animate-fade-in");
@@ -133,7 +133,7 @@ export const KanjiStrokeOrder = ({ kanji, strokeUrl }: KanjiStrokeOrderProps) =>
       className="w-full flex justify-center p-6 bg-card rounded-lg border border-primary/10 hover-scale"
       aria-label={`Animated stroke order for ${kanji}. Click to replay.`}
     >
-      <div ref={containerRef} style={{ maxHeight: 400, width: '100%', maxWidth: 480 }} />
+      <div ref={containerRef} style={{ maxHeight: 320, width: '100%', maxWidth: 360 }} />
     </div>
   );
 };
