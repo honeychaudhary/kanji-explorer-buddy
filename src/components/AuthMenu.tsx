@@ -6,17 +6,28 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 export const AuthMenu = () => {
-  const { user, isGuest, signInMagic, signOut } = useAuth();
+  const { user, isGuest, signIn, signUp, signOut } = useAuth();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSend = async () => {
-    const res = await signInMagic(email);
+  const handleSignIn = async () => {
+    const res = await signIn(email, password);
     if (res.ok) {
-      toast.success(res.message || "Magic link sent");
+      toast.success(res.message || "Signed in");
       setOpen(false);
     } else {
-      toast.error(res.message || "Failed to send magic link");
+      toast.error(res.message || "Failed to sign in");
+    }
+  };
+
+  const handleSignUp = async () => {
+    const res = await signUp(email, password);
+    if (res.ok) {
+      toast.success(res.message || "Account created. You can now sign in.");
+      setOpen(false);
+    } else {
+      toast.error(res.message || "Failed to create account");
     }
   };
 
@@ -34,11 +45,15 @@ export const AuthMenu = () => {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Sign in with magic link</DialogTitle>
+              <DialogTitle>Sign in</DialogTitle>
             </DialogHeader>
             <div className="space-y-3">
               <Input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <Button onClick={handleSend} disabled={!email}>Send magic link</Button>
+              <Input type="password" placeholder="Your password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <div className="flex gap-2">
+                <Button onClick={handleSignIn} disabled={!email || !password}>Sign in</Button>
+                <Button variant="outline" onClick={handleSignUp} disabled={!email || !password}>Create account</Button>
+              </div>
               <p className="text-sm text-muted-foreground">Or continue as guest—your progress will sync after you sign in.</p>
             </div>
           </DialogContent>

@@ -13,7 +13,8 @@ import { useProgress } from "@/hooks/useProgress";
 const getKanjiStrokeOrderUrl = (kanji: string) => {
   const cp = kanji.codePointAt(0) ?? 0;
   const hex = cp.toString(16).padStart(5, "0");
-  return `https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`;
+  // Use jsDelivr CDN for reliable CORS when fetching SVGs
+  return `https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg/kanji/${hex}.svg`;
 };
 
 interface KanjiDetailDialogProps {
@@ -225,7 +226,7 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
                           )}
                         </div>
                         <AudioButton 
-                          text={word.variants[0]?.written || ''} 
+                          text={word.variants[0]?.pronounced || word.variants[0]?.written || ''} 
                           id={`word-${idx}`}
                           className="text-primary hover:text-primary/80"
                         />

@@ -5,7 +5,8 @@ import type { User } from "@supabase/supabase-js";
 interface AuthContextValue {
   user: User | null;
   isGuest: boolean;
-  signInMagic: (email: string) => Promise<{ ok: boolean; message?: string }>;
+  signIn: (email: string, password: string) => Promise<{ ok: boolean; message?: string }>;
+  signUp: (email: string, password: string) => Promise<{ ok: boolean; message?: string }>;
   signOut: () => Promise<void>;
 }
 
@@ -37,12 +38,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     () => ({
       user,
       isGuest: !user,
-      async signInMagic(email: string) {
+      async signIn(email: string, password: string) {
         const sb = getSupabaseClientOrNull();
         if (!sb) return { ok: false, message: "Supabase not configured. Sign-in unavailable." };
-        const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.href } });
+        const { error } = await sb.auth.signInWithPassword({ email, password });
         if (error) return { ok: false, message: error.message };
-        return { ok: true, message: "Magic link sent! Check your email." };
+        return { ok: true, message: "Signed in" };
+      },
+      async signUp(email: string, password: string) {
+        const sb = getSupabaseClientOrNull();
+        if (!sb) return { ok: false, message: "Supabase not configured. Sign-up unavailable." };
+        const { error } = await sb.auth.signUp({ email, password });
+        if (error) return { ok: false, message: error.message };
+        return { ok: true, message: "Account created" };
       },
       async signOut() {
         const sb = getSupabaseClientOrNull();
