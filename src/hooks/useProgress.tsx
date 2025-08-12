@@ -87,6 +87,19 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
 export const useProgress = () => {
   const ctx = useContext(ProgressContext);
-  if (!ctx) throw new Error("useProgress must be used within ProgressProvider");
+  if (!ctx) {
+    // Safe fallback to local-only progress to avoid crash if provider is not mounted yet (e.g. during HMR)
+    const local = loadLocal();
+    // Return lightweight no-op sync that only uses localStorage
+    return {
+      getStatus: (kanji: string) => local[kanji] ?? "not_visited",
+      setStatus: async (kanji: string, status: ProgressStatus) => {
+        const m = loadLocal();
+        m[kanji] = status;
+        saveLocal(m);
+      },
+      all: local,
+    } as ProgressContextValue;
+  }
   return ctx;
 };
