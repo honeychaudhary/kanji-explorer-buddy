@@ -14,6 +14,11 @@ export const KanjiStrokeOrder = ({ kanji, strokeUrl }: KanjiStrokeOrderProps) =>
     const strokePaths = paths.filter((p) => p.getAttribute("kvg:type") === "stroke");
     const targets = strokePaths.length > 0 ? strokePaths : paths;
 
+    // Resolve theme colors once from CSS variables to ensure valid computed values
+    const root = getComputedStyle(document.documentElement);
+    const primary = `hsl(${root.getPropertyValue('--primary').trim()})`;
+    const mutedFg = `hsl(${root.getPropertyValue('--muted-foreground').trim()})`;
+
     let delay = 0;
     const baseDuration = 0.6; // seconds per stroke
     const gap = 0.15; // delay between strokes
@@ -25,7 +30,7 @@ export const KanjiStrokeOrder = ({ kanji, strokeUrl }: KanjiStrokeOrderProps) =>
         // Clone a faint background stroke to show full character silhouette
         const bg = p.cloneNode(false) as SVGPathElement;
         bg.style.fill = "transparent";
-        bg.style.stroke = "hsl(var(--muted-foreground))";
+        bg.style.stroke = mutedFg;
         bg.style.strokeWidth = "8";
         bg.style.strokeLinecap = "round";
         bg.style.strokeLinejoin = "round";
@@ -34,7 +39,7 @@ export const KanjiStrokeOrder = ({ kanji, strokeUrl }: KanjiStrokeOrderProps) =>
 
         // Prepare the animated stroke
         p.style.fill = "transparent";
-        p.style.stroke = "hsl(var(--primary))";
+        p.style.stroke = primary;
         p.style.strokeWidth = "8";
         p.style.strokeLinecap = "round";
         p.style.strokeLinejoin = "round";
@@ -79,10 +84,10 @@ export const KanjiStrokeOrder = ({ kanji, strokeUrl }: KanjiStrokeOrderProps) =>
         svg.removeAttribute("width");
         svg.removeAttribute("height");
         svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
-        svg.style.maxWidth = "100%";
+        svg.style.width = "100%";
+        svg.style.maxWidth = "480px";
         svg.style.height = "auto";
         svg.style.display = "block";
-        svg.style.cursor = "pointer";
         svg.classList.add("animate-fade-in");
 
         // Remove fills and ensure strokes are visible
@@ -128,7 +133,7 @@ export const KanjiStrokeOrder = ({ kanji, strokeUrl }: KanjiStrokeOrderProps) =>
       className="w-full flex justify-center p-6 bg-card rounded-lg border border-primary/10 hover-scale"
       aria-label={`Animated stroke order for ${kanji}. Click to replay.`}
     >
-      <div ref={containerRef} style={{ maxHeight: 400 }} />
+      <div ref={containerRef} style={{ maxHeight: 400, width: '100%', maxWidth: 480 }} />
     </div>
   );
 };
