@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Menu, X, Home, Info } from "lucide-react";
+import { Menu, X, Home, Info, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -39,6 +39,20 @@ export function Navigation({ currentLevel, onLevelChange, showLevelSelector = fa
             >
               <Home className="w-4 h-4" />
               <span>Home</span>
+            </NavLink>
+
+            <NavLink
+              to="/learn"
+              className={({ isActive }) =>
+                `flex items-center space-x-1 px-3 py-2 rounded-md transition-colors ${
+                  isActive
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "hover:bg-primary-foreground/10"
+                }`
+              }
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>Learn</span>
             </NavLink>
 
             <NavLink
@@ -100,6 +114,21 @@ export function Navigation({ currentLevel, onLevelChange, showLevelSelector = fa
             >
               <Home className="w-4 h-4" />
               <span>Home</span>
+            </NavLink>
+
+            <NavLink
+              to="/learn"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
+                  isActive
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "hover:bg-primary-foreground/10"
+                }`
+              }
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>Learn</span>
             </NavLink>
 
             <NavLink
