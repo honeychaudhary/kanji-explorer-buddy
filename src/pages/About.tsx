@@ -1,9 +1,27 @@
 import { Navigation } from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { SakuraBackground } from "@/components/SakuraBackground";
+import { Instagram, MessageSquare, Send } from "lucide-react";
+import { useState } from "react";
 
 export default function About() {
+  const [feedback, setFeedback] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleFeedbackSubmit = async () => {
+    if (!feedback.trim()) return;
+    
+    setIsSubmitting(true);
+    // Here you would typically send feedback to your backend
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setFeedback("");
+    setIsSubmitting(false);
+  };
+
   return (
     <div className="min-h-screen bg-background paper-texture">
       <SakuraBackground />
@@ -35,11 +53,11 @@ export default function About() {
                 </p>
                 <div className="space-y-2">
                   {[
-                    { level: "N5", description: "Basic level - 800+ kanji", difficulty: "Beginner" },
-                    { level: "N4", description: "Elementary level - 1,500+ kanji", difficulty: "Elementary" },
-                    { level: "N3", description: "Intermediate level - 3,000+ kanji", difficulty: "Intermediate" },
-                    { level: "N2", description: "Upper intermediate - 6,000+ kanji", difficulty: "Advanced" },
-                    { level: "N1", description: "Advanced level - 10,000+ kanji", difficulty: "Expert" }
+                    { level: "N5", description: "Basic level - ~103 kanji", difficulty: "Beginner" },
+                    { level: "N4", description: "Elementary level - ~284 kanji", difficulty: "Elementary" },
+                    { level: "N3", description: "Intermediate level - ~650 kanji", difficulty: "Intermediate" },
+                    { level: "N2", description: "Upper intermediate - ~1,065 kanji", difficulty: "Advanced" },
+                    { level: "N1", description: "Advanced level - ~1,750 kanji", difficulty: "Expert" }
                   ].map((item) => (
                     <div key={item.level} className="flex items-center justify-between p-2 bg-muted/50 rounded">
                       <div className="flex items-center gap-2">
@@ -157,7 +175,110 @@ export default function About() {
             </Card>
           </div>
 
-          <Card className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 font-japanese-serif">
+                  <MessageSquare className="w-6 h-6" />
+                  Feedback
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Help us improve! Share your thoughts, suggestions, or report any issues you encounter.
+                </p>
+                <Textarea
+                  placeholder="Share your feedback here..."
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                  className="min-h-[100px]"
+                />
+                <Button 
+                  onClick={handleFeedbackSubmit}
+                  disabled={!feedback.trim() || isSubmitting}
+                  className="w-full"
+                >
+                  <Send className="w-4 h-4 mr-2" />
+                  {isSubmitting ? "Sending..." : "Send Feedback"}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 font-japanese-serif">
+                  <Instagram className="w-6 h-6" />
+                  Contact Us
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Connect with our team on Instagram for updates and support.
+                </p>
+                <div className="space-y-3">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start">
+                        <Instagram className="w-4 h-4 mr-2" />
+                        @xxvitaminz
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Connect with @xxvitaminz</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <p className="text-sm text-muted-foreground">
+                          Follow @xxvitaminz on Instagram for updates, tips, and more Japanese learning content!
+                        </p>
+                        <Button asChild className="w-full">
+                          <a 
+                            href="https://instagram.com/xxvitaminz" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            <Instagram className="w-4 h-4 mr-2" />
+                            Open Instagram Profile
+                          </a>
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start">
+                        <Instagram className="w-4 h-4 mr-2" />
+                        @thisisadarshtyagi
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Connect with @thisisadarshtyagi</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <p className="text-sm text-muted-foreground">
+                          Follow @thisisadarshtyagi on Instagram for development insights and Japanese learning resources!
+                        </p>
+                        <Button asChild className="w-full">
+                          <a 
+                            href="https://instagram.com/thisisadarshtyagi" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            <Instagram className="w-4 h-4 mr-2" />
+                            Open Instagram Profile
+                          </a>
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
             <CardHeader>
               <CardTitle className="text-center font-japanese-serif">
                 <span className="text-3xl block mb-2">頑張って！</span>
