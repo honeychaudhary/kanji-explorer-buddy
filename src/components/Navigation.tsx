@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Menu, X, Home, Info, BookOpen } from "lucide-react";
+import { Menu, X, Home, Info, BookOpen, BarChart3, Settings } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -67,6 +67,34 @@ export function Navigation({ currentLevel, onLevelChange, showLevelSelector = fa
             >
               <Info className="w-4 h-4" />
               <span>About</span>
+            </NavLink>
+
+            <NavLink
+              to="/progress"
+              className={({ isActive }) =>
+                `flex items-center space-x-1 px-3 py-2 rounded-md transition-colors ${
+                  isActive
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "hover:bg-primary-foreground/10"
+                }`
+              }
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span>Progress</span>
+            </NavLink>
+
+            <NavLink
+              to="/settings"
+              className={({ isActive }) =>
+                `flex items-center space-x-1 px-3 py-2 rounded-md transition-colors ${
+                  isActive
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "hover:bg-primary-foreground/10"
+                }`
+              }
+            >
+              <Settings className="w-4 h-4" />
+              <span>Settings</span>
             </NavLink>
 
             {showLevelSelector && currentLevel && onLevelChange && (
@@ -144,6 +172,36 @@ export function Navigation({ currentLevel, onLevelChange, showLevelSelector = fa
             >
               <Info className="w-4 h-4" />
               <span>About</span>
+            </NavLink>
+
+            <NavLink
+              to="/progress"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
+                  isActive
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "hover:bg-primary-foreground/10"
+                }`
+              }
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span>Progress</span>
+            </NavLink>
+
+            <NavLink
+              to="/settings"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
+                  isActive
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "hover:bg-primary-foreground/10"
+                }`
+              }
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Settings className="w-4 h-4" />
+              <span>Settings</span>
             </NavLink>
 
             {showLevelSelector && currentLevel && onLevelChange && (

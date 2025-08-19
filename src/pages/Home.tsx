@@ -42,7 +42,10 @@ const Home = () => {
             Why Choose Our Kanji Learning Platform?
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
+            <Card 
+              className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
+              onClick={() => window.location.href = '/learn'}
+            >
               <CardContent className="p-6">
                 <BookOpen className="h-12 w-12 text-primary mx-auto mb-4 transition-transform duration-300 hover:scale-110" />
                 <h4 className="text-xl font-semibold mb-2">Interactive Learning</h4>
@@ -52,7 +55,10 @@ const Home = () => {
               </CardContent>
             </Card>
             
-            <Card className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
+            <Card 
+              className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
+              onClick={() => window.location.href = '/jlpt/n5'}
+            >
               <CardContent className="p-6">
                 <Target className="h-12 w-12 text-primary mx-auto mb-4 transition-transform duration-300 hover:scale-110" />
                 <h4 className="text-xl font-semibold mb-2">JLPT Structured</h4>
@@ -62,7 +68,10 @@ const Home = () => {
               </CardContent>
             </Card>
             
-            <Card className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
+            <Card 
+              className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
+              onClick={() => window.location.href = '/progress'}
+            >
               <CardContent className="p-6">
                 <Trophy className="h-12 w-12 text-primary mx-auto mb-4 transition-transform duration-300 hover:scale-110" />
                 <h4 className="text-xl font-semibold mb-2">Track Progress</h4>
@@ -72,7 +81,10 @@ const Home = () => {
               </CardContent>
             </Card>
             
-            <Card className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
+            <Card 
+              className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
+              onClick={() => window.location.href = '/settings'}
+            >
               <CardContent className="p-6">
                 <Users className="h-12 w-12 text-primary mx-auto mb-4 transition-transform duration-300 hover:scale-110" />
                 <h4 className="text-xl font-semibold mb-2">Audio Support</h4>
