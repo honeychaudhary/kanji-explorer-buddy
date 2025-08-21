@@ -14,7 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          current_streak: number | null
+          display_name: string | null
+          id: string
+          last_study_date: string | null
+          longest_streak: number | null
+          preferred_jlpt_level: string | null
+          total_kanji_learned: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          current_streak?: number | null
+          display_name?: string | null
+          id?: string
+          last_study_date?: string | null
+          longest_streak?: number | null
+          preferred_jlpt_level?: string | null
+          total_kanji_learned?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          current_streak?: number | null
+          display_name?: string | null
+          id?: string
+          last_study_date?: string | null
+          longest_streak?: number | null
+          preferred_jlpt_level?: string | null
+          total_kanji_learned?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          created_at: string
+          difficulty_score: number | null
+          id: string
+          kanji: string
+          last_reviewed_at: string | null
+          status: string
+          times_reviewed: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          difficulty_score?: number | null
+          id?: string
+          kanji: string
+          last_reviewed_at?: string | null
+          status: string
+          times_reviewed?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          difficulty_score?: number | null
+          id?: string
+          kanji?: string
+          last_reviewed_at?: string | null
+          status?: string
+          times_reviewed?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
