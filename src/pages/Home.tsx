@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Navigation } from "@/components/Navigation";
@@ -6,6 +6,8 @@ import { SakuraBackground } from "@/components/SakuraBackground";
 import { BookOpen, Target, Trophy, Users } from "lucide-react";
 
 const Home = () => {
+  const navigate = useNavigate();
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-japanese-cream/20">
       <SakuraBackground />
@@ -44,7 +46,7 @@ const Home = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card 
               className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
-              onClick={() => window.location.href = '/learn'}
+              onClick={() => navigate('/learn')}
             >
               <CardContent className="p-6">
                 <BookOpen className="h-12 w-12 text-primary mx-auto mb-4 transition-transform duration-300 hover:scale-110" />
@@ -57,7 +59,7 @@ const Home = () => {
             
             <Card 
               className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
-              onClick={() => window.location.href = '/jlpt/n5'}
+              onClick={() => navigate('/jlpt/n5')}
             >
               <CardContent className="p-6">
                 <Target className="h-12 w-12 text-primary mx-auto mb-4 transition-transform duration-300 hover:scale-110" />
@@ -70,7 +72,7 @@ const Home = () => {
             
             <Card 
               className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
-              onClick={() => window.location.href = '/progress'}
+              onClick={() => navigate('/progress')}
             >
               <CardContent className="p-6">
                 <Trophy className="h-12 w-12 text-primary mx-auto mb-4 transition-transform duration-300 hover:scale-110" />
@@ -83,7 +85,7 @@ const Home = () => {
             
             <Card 
               className="text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
-              onClick={() => window.location.href = '/settings'}
+              onClick={() => navigate('/settings')}
             >
               <CardContent className="p-6">
                 <Users className="h-12 w-12 text-primary mx-auto mb-4 transition-transform duration-300 hover:scale-110" />
