@@ -108,9 +108,14 @@ const Home = () => {
           <p className="text-xl text-muted-foreground mb-8">
             Join thousands of learners mastering Japanese kanji step by step
           </p>
-          <Button asChild size="lg" className="text-lg px-8 py-6">
-            <Link to="/learn">Start Learning Now</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="text-lg px-8 py-6">
+              <Link to="/learn">Start Learning Now</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+              <Link to="/auth">Sign In / Sign Up</Link>
+            </Button>
+          </div>
         </div>
       </section>
 

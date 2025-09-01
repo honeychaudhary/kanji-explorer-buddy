@@ -1,1 +1,7 @@
 project_id = "xrcgmzzxfvmageolncpj"
+
+[functions.ai-kanji-explanation]
+verify_jwt = false
+
+[functions.ai-study-recommendations]
+verify_jwt = true
