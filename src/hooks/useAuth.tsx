@@ -94,11 +94,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return error ? { ok: false, message: error.message } : { ok: true };
       },
       async signInWithGoogle() {
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: "google",
-          options: { redirectTo: `${window.location.origin}/` },
+        const result: any = await lovable.auth.signInWithOAuth("google", {
+          redirect_uri: window.location.origin,
         });
-        return error ? { ok: false, message: error.message } : { ok: true };
+        if (result?.error) return { ok: false, message: result.error.message || String(result.error) };
+        return { ok: true };
       },
       async resetPassword(email) {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
