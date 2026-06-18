@@ -14,17 +14,64 @@ export type Database = {
   }
   public: {
     Tables: {
+      audio_plays: {
+        Row: {
+          created_at: string
+          id: string
+          kanji: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kanji: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kanji?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      kanji_searches: {
+        Row: {
+          created_at: string
+          id: string
+          kanji: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kanji: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kanji?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           bio: string | null
           created_at: string
           current_streak: number
+          daily_audio_count: number
+          daily_audio_reset_date: string
           display_name: string
+          email: string | null
+          full_name: string | null
           id: string
           last_study_date: string | null
           longest_streak: number
           preferred_jlpt_level: string
+          subscription_plan: string
           total_kanji_learned: number
           updated_at: string
           user_id: string
@@ -34,11 +81,16 @@ export type Database = {
           bio?: string | null
           created_at?: string
           current_streak?: number
+          daily_audio_count?: number
+          daily_audio_reset_date?: string
           display_name?: string
+          email?: string | null
+          full_name?: string | null
           id?: string
           last_study_date?: string | null
           longest_streak?: number
           preferred_jlpt_level?: string
+          subscription_plan?: string
           total_kanji_learned?: number
           updated_at?: string
           user_id: string
@@ -48,11 +100,16 @@ export type Database = {
           bio?: string | null
           created_at?: string
           current_streak?: number
+          daily_audio_count?: number
+          daily_audio_reset_date?: string
           display_name?: string
+          email?: string | null
+          full_name?: string | null
           id?: string
           last_study_date?: string | null
           longest_streak?: number
           preferred_jlpt_level?: string
+          subscription_plan?: string
           total_kanji_learned?: number
           updated_at?: string
           user_id?: string
