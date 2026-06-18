@@ -164,6 +164,11 @@ export default function Auth() {
                 >
                   {loading ? "Signing In..." : "Sign In"}
                 </Button>
+                <div className="text-center">
+                  <Link to="/forgot-password" className="text-xs text-muted-foreground hover:underline">
+                    Forgot password?
+                  </Link>
+                </div>
               </TabsContent>
               
               <TabsContent value="signup" className="space-y-4">
