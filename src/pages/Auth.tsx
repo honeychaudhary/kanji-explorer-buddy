@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,7 @@ import { SakuraBackground } from "@/components/SakuraBackground";
 
 export default function Auth() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -73,18 +73,8 @@ export default function Auth() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      const redirectUrl = `${window.location.origin}/`;
-      
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: redirectUrl
-        }
-      });
-
-      if (error) throw error;
-    } catch (error: any) {
-      toast.error(error.message);
+      const res = await signInWithGoogle();
+      if (!res.ok) toast.error(res.message || "Google sign-in failed");
     } finally {
       setLoading(false);
     }
@@ -164,6 +154,11 @@ export default function Auth() {
                 >
                   {loading ? "Signing In..." : "Sign In"}
                 </Button>
+                <div className="text-center">
+                  <Link to="/forgot-password" className="text-xs text-muted-foreground hover:underline">
+                    Forgot password?
+                  </Link>
+                </div>
               </TabsContent>
               
               <TabsContent value="signup" className="space-y-4">

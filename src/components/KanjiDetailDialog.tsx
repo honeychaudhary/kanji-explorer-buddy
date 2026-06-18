@@ -9,6 +9,7 @@ import { AudioButton } from "./AudioButton";
 import { Button } from "@/components/ui/button";
 import { KanjiStrokeOrder } from "./KanjiStrokeOrder";
 import { useProgress } from "@/hooks/useProgress";
+import { supabase } from "@/integrations/supabase/client";
 
 const getKanjiStrokeOrderUrl = (kanji: string) => {
   const cp = kanji.codePointAt(0) ?? 0;
@@ -33,6 +34,8 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
   useEffect(() => {
     let cancelled = false;
     setExamples(null);
+    // Log search analytics (fire and forget)
+    supabase.from('kanji_searches').insert({ kanji: entry.char, user_id: null }).then(() => {});
     fetch(`https://kanjiapi.dev/v1/words/${encodeURIComponent(entry.char)}`)
       .then((r) => (r.ok ? r.json() : Promise.resolve([])))
       .then((list: APIWordItem[]) => {

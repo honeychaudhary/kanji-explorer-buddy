@@ -1,64 +1,67 @@
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
-import { toast } from "sonner";
+import { LogOut, User as UserIcon, Shield } from "lucide-react";
 
 export const AuthMenu = () => {
-  const { user, isGuest, signIn, signUp, signOut } = useAuth();
-  const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { user, profile, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSignIn = async () => {
-    const res = await signIn(email, password);
-    if (res.ok) {
-      toast.success(res.message || "Signed in");
-      setOpen(false);
-    } else {
-      toast.error(res.message || "Failed to sign in");
-    }
-  };
+  if (!user) {
+    return (
+      <Button asChild size="sm" variant="secondary">
+        <Link to="/login">Sign in</Link>
+      </Button>
+    );
+  }
 
-  const handleSignUp = async () => {
-    const res = await signUp(email, password);
-    if (res.ok) {
-      toast.success(res.message || "Account created. You can now sign in.");
-      setOpen(false);
-    } else {
-      toast.error(res.message || "Failed to create account");
-    }
-  };
+  const name = profile?.full_name || profile?.display_name || user.email?.split("@")[0] || "User";
+  const initials = name.slice(0, 2).toUpperCase();
+  const avatar = profile?.avatar_url || (user.user_metadata as any)?.avatar_url;
 
   return (
-    <div className="flex items-center gap-2">
-      {user ? (
-        <>
-          <span className="text-sm opacity-90">{user.email}</span>
-          <Button size="sm" variant="secondary" onClick={signOut}>Sign out</Button>
-        </>
-      ) : (
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button size="sm" variant="secondary">Sign in</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Sign in</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-3">
-              <Input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <Input type="password" placeholder="Your password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <div className="flex gap-2">
-                <Button onClick={handleSignIn} disabled={!email || !password}>Sign in</Button>
-                <Button variant="outline" onClick={handleSignUp} disabled={!email || !password}>Create account</Button>
-              </div>
-              <p className="text-sm text-muted-foreground">Or continue as guest—your progress will sync after you sign in.</p>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-primary-foreground/10 transition-colors">
+          <Avatar className="w-7 h-7">
+            {avatar && <AvatarImage src={avatar} alt={name} />}
+            <AvatarFallback className="text-xs bg-primary-foreground/20 text-primary-foreground">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          <span className="text-sm hidden sm:inline max-w-[120px] truncate">{name}</span>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuLabel>
+          <div className="flex flex-col">
+            <span className="font-medium truncate">{name}</span>
+            <span className="text-xs text-muted-foreground truncate">{user.email}</span>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => navigate("/settings")}>
+          <UserIcon className="w-4 h-4 mr-2" /> Settings
+        </DropdownMenuItem>
+        {isAdmin && (
+          <DropdownMenuItem onClick={() => navigate("/admin")}>
+            <Shield className="w-4 h-4 mr-2" /> Admin dashboard
+          </DropdownMenuItem>
+        )}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => signOut()}>
+          <LogOut className="w-4 h-4 mr-2" /> Sign out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
