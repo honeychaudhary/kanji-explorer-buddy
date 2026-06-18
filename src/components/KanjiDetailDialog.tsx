@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { KanjiStrokeOrder } from "./KanjiStrokeOrder";
 import { useProgress } from "@/hooks/useProgress";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
 
 const getKanjiStrokeOrderUrl = (kanji: string) => {
   const cp = kanji.codePointAt(0) ?? 0;
