@@ -1,65 +1,55 @@
-# Kanji Explorer — Detailed Project Documentation
+# Kanji Explorer Buddy — Premium Platform Rollout
 
-You asked for a "detailed src" — I'll interpret that as a detailed **doc** for the project. Since you didn't pick a format, I'll deliver both:
+This is a very large scope. To ship safely without breaking the existing UI, I'll split it into 4 phases. Please confirm the phase order (or tell me to start with a different one) before I begin coding.
 
-1. A rich **`README.md`** committed to the repo (replacing the current 1-line README).
-2. A polished **PDF** version (`/mnt/documents/Kanji_Explorer_Documentation.pdf`) you can share/download.
-3. A **Mermaid architecture diagram** artifact for visual reference.
+## Phase 1 — Monetization (Stripe + paywall)
+**Goal:** money in, gating working, ads only for free users.
 
-Depth target: **detailed technical doc** (~4–6 pages of content).
+- New tables: `subscriptions` (user_id, plan, status, stripe_customer_id, stripe_subscription_id, current_period_end), `payments` (user_id, amount, currency, stripe_payment_id, plan, status), `daily_audio_usage` (user_id, date, count). RLS: user reads own; service role writes from webhooks.
+- Edge functions (all use Stripe secret + webhook secret you'll add):
+  - `create-checkout` — creates Stripe Checkout session for Pro (₹79 INR subscription) or Lifetime (₹790 INR one-time).
+  - `stripe-webhook` (verify_jwt=false) — handles `checkout.session.completed`, `invoice.paid`, `customer.subscription.updated/deleted`; upserts `subscriptions` and inserts `payments`. Updates `profiles.subscription_plan`.
+  - `customer-portal` — Stripe billing portal session.
+  - `check-subscription` — returns current plan/status for the logged-in user.
+- Frontend:
+  - `/pricing` page (3 cards: Free, Pro ₹79/mo, Lifetime ₹790).
+  - `/upgrade` (CTA wrapper around Pricing).
+  - `/billing` (current plan, manage via portal, payment history).
+  - Profile page: show current plan badge.
+  - `useSubscription()` hook (TanStack Query) — single source of truth.
+  - AudioButton: free-tier daily limit of 5 (RPC `increment_audio_play` with date reset). Show toast "You have reached today's free limit. Upgrade to Pro for unlimited pronunciation audio." with Upgrade button.
+- Ads:
+  - `<AdSlot variant="in-content" />` and `<StickyFooterAd />` components. Only render when `plan === 'free'`. Pro/Lifetime see nothing.
+- Secrets needed from you: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID_PRO`, `STRIPE_PRICE_ID_LIFETIME` (I'll request via add_secret).
 
----
+## Phase 2 — Learning dashboard + AI Sensei (Pro/Lifetime)
+- Tables: `user_xp` (xp, level), `streaks` (current, longest, last_active), `achievements` + `user_achievements`, `favorites` (kanji), `learning_history` (kanji, viewed_at), `sensei_conversations` + `sensei_messages`.
+- `/dashboard`: streak ring, XP bar (levels 1–100 via `floor(sqrt(xp/50))+1`), achievements grid, favorites, history, weekly stats chart, study calendar heatmap, progress %.
+- Favorite ⭐ button on KanjiDetailDialog; auto-log to `learning_history`; award XP on first view per day; update streak.
+- `/sensei`: chat UI gated to Pro/Lifetime. Edge function `ai-sensei` using Lovable AI Gateway (`google/gemini-3-flash-preview`), streaming, system prompt structured for Meaning / Onyomi / Kunyomi / Stroke count / Example words / Sentences / Mnemonics. Persists conversations.
 
-## What the documentation will cover
+## Phase 3 — SEO landing pages
+Static pages with React Helmet (canonical, OG, JSON-LD `LearningResource`/`BreadcrumbList`):
+- `/jlpt-n5-kanji`, `/jlpt-n4-kanji`, `/jlpt-n3-kanji`, `/jlpt-n2-kanji`, `/jlpt-n1-kanji`
+- `/hiragana-chart`, `/katakana-chart`
+- `/common-japanese-words`, `/stroke-order-guide`
+Each renders real content from existing kana/kanji data so they're indexable, not thin. Update `sitemap.xml` + `robots.txt`.
 
-1. **Project overview** — what Kanji Explorer is, target users, value prop.
-2. **Feature catalog**
-   - Kanji explorer & detail dialog (stroke order, audio TTS)
-   - JLPT level browsing (N5–N1)
-   - Learn / study mode
-   - Progress tracking with statuses (new → learning → learned → mastered)
-   - Auth (email/password via Supabase) with guest fallback
-   - User profile (display name, avatar, bio, study stats)
-   - AI-powered kanji explanations (edge function)
-   - AI-powered personalized study recommendations (edge function)
-   - Sakura background, theming
-3. **Tech stack** — React 18, Vite 5, TypeScript, Tailwind v3, shadcn/ui, Radix, react-router, TanStack Query, Supabase (auth + Postgres + Edge Functions), Lovable AI Gateway.
-4. **System architecture** — client/SPA, Supabase backend, edge functions, AI gateway. Mermaid diagram.
-5. **Folder structure** — annotated tree of `src/` (pages, components, hooks, integrations, lib, data, types) and `supabase/` (functions, migrations, config).
-6. **Routing map** — every route in `App.tsx` and what it renders.
-7. **State management**
-   - `AuthProvider` (session + sign in/up/out)
-   - `ProgressProvider` (local/guest progress)
-   - `useSupabaseProgress` (server-synced progress for logged-in users)
-   - TanStack Query for async caching
-8. **Data model / DB schema** — tables: `profiles`, `user_progress`, `user_roles` (+ enum `app_role`), with RLS policies and the `has_role` security-definer function.
-9. **Authentication & authorization flow** — signup → trigger creates profile → session via `onAuthStateChange` → RLS enforces per-user access.
-10. **Progress tracking flow** — review event → `updateProgress` upsert → `profiles.total_kanji_learned` recomputed → UI re-render.
-11. **AI edge functions**
-    - `ai-kanji-explanation` (verify_jwt = false, public)
-    - `ai-study-recommendations` (verify_jwt = true, authenticated)
-    - Request/response shape, where they're called from, model gateway usage.
-12. **Security posture** — RLS-only access, profiles restricted to owner SELECT, roles in dedicated table (no privilege escalation), security-definer functions with locked `search_path`, secrets via Supabase, OTP expiry note.
-13. **Sequence diagrams** (Mermaid) for: sign-up, kanji review, AI explanation request.
-14. **Local dev & deployment** — `npm i`, `npm run dev`, env via Lovable Cloud, deploying via Lovable.
-15. **Future roadmap suggestions** — SRS scheduling, offline mode, social features, mobile PWA.
+## Phase 4 — Study tools + admin upgrade
+- Flashcards (SRS-lite), JLPT mock tests, vocab quizzes, daily word challenge, search history page, recommendations (reuse existing `ai-study-recommendations`), progress reports, dark mode toggle, leaderboards (`public_leaderboard` view of XP).
+- Email reminders + push notifications: scaffold opt-in UI + a scheduled edge function stub. **Real delivery requires Resend (email) and a push service (VAPID/OneSignal). I'll ask for those keys when we reach this phase.**
+- Admin dashboard additions: monthly revenue (sum payments), daily traffic, retention cohort, conversion rate (paid/total). Charts via Recharts.
 
-## Files I'll change/create
+## Technical notes
+- All new tables: `GRANT` + RLS + policies in the same migration. Webhooks use service role.
+- All edge functions: JWT verification on user-scoped ones, input validation (Zod), generic error responses (per @security-memory).
+- TanStack Query everywhere for loading/error states. Skeletons preserved.
+- No redesign of existing pages — only additive routes/components. Navigation gets new links: Pricing, Dashboard, Sensei.
+- Stripe in INR: confirm your Stripe account supports INR; if not, we'll switch currency.
 
-- **edit** `README.md` — replace stub with full documentation.
-- **create** `docs/ARCHITECTURE.md` — the same long-form doc, kept under `docs/` for discoverability.
-- **create** `/mnt/documents/Kanji_Explorer_Documentation.pdf` — generated via a one-off script (markdown → HTML → PDF via headless tool), QA'd page-by-page.
-- **create** `/mnt/documents/Kanji_Explorer_Architecture.mmd` — Mermaid diagram artifact.
+## What I need from you to start Phase 1
+1. Confirm phased order is OK (or pick a different starting phase).
+2. Confirm Stripe account is set up for INR.
+3. Ready to provide `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` when prompted, plus create the two Stripe prices (or let me create them programmatically on first checkout).
 
-## Technical notes (how I'll build the PDF)
-
-- Write the doc as Markdown, convert to HTML with a small Node script, then render to PDF using a headless renderer available in the sandbox (pandoc + a PDF engine, or a JS-based renderer). Fall back to a plain pandoc → PDF pipeline if needed.
-- After generation, rasterize each page to JPEG and visually inspect for clipped text, broken layout, missing fonts before delivering. Iterate if issues are found.
-- No code in the app changes — this is documentation only, so existing functionality is unaffected.
-
-## Out of scope
-
-- No app feature changes, no schema changes, no new routes.
-- No edits to AI prompts or edge function logic.
-
-Approve this and I'll generate the README, the architecture doc, the Mermaid diagram, and the PDF in one pass.
+Reply "go" to start Phase 1, or tell me which phase to start with.
