@@ -34,8 +34,13 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
   useEffect(() => {
     let cancelled = false;
     setExamples(null);
-    // Log search analytics (fire and forget)
-    supabase.from('kanji_searches').insert({ kanji: entry.char, user_id: null }).then(() => {});
+    // Log search analytics for signed-in users only (fire and forget)
+    supabase.auth.getUser().then(({ data }) => {
+      const uid = data.user?.id;
+      if (uid) {
+        supabase.from('kanji_searches').insert({ kanji: entry.char, user_id: uid }).then(() => {});
+      }
+    });
     fetch(`https://kanjiapi.dev/v1/words/${encodeURIComponent(entry.char)}`)
       .then((r) => (r.ok ? r.json() : Promise.resolve([])))
       .then((list: APIWordItem[]) => {
@@ -46,6 +51,7 @@ export const KanjiDetailDialog = ({ entry, children }: KanjiDetailDialogProps) =
       cancelled = true;
     };
   }, [entry.char]);
+
 
   const loading = examples === null;
   const { getStatus, setStatus } = useProgress();
