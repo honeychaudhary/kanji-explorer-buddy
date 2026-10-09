@@ -1,5 +1,5 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, OrbitControls, RoundedBox } from "@react-three/drei";
 import { CanvasTexture, SRGBColorSpace, type Group } from "three";
 import { Pause, Play, RotateCcw } from "lucide-react";
@@ -85,6 +85,17 @@ function Composition({ palette, moving }: { palette: Palette; moving: boolean })
   );
 }
 
+function ResponsiveCamera() {
+  const { camera, size } = useThree();
+  useEffect(() => {
+    const aspect = size.width / size.height;
+    camera.position.set(0, 0.25, Math.max(6.1, 4 / (aspect * Math.tan(17 * Math.PI / 180))));
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+  }, [camera, size]);
+  return null;
+}
+
 export default function HomeKanjiScene() {
   const [palette, setPalette] = useState<Palette>();
   const [moving, setMoving] = useState(false);
@@ -92,7 +103,8 @@ export default function HomeKanjiScene() {
   useEffect(() => {
     const update = () => {
       const css = getComputedStyle(document.documentElement);
-      const color = (token: string) => `hsl(${css.getPropertyValue(token).trim()})`;
+      // Three's CSS parser needs comma-separated HSL, unlike browser CSS.
+      const color = (token: string) => `hsl(${css.getPropertyValue(token).trim().split(/\s+/).join(",")})`;
       setPalette({ paper: color("--japanese-cream"), ink: color("--japanese-black"), red: color("--primary"), gold: color("--japanese-gold") });
     };
     document.fonts.ready.then(update);
@@ -109,6 +121,7 @@ export default function HomeKanjiScene() {
       <SceneBoundary>
         {palette ? (
           <Canvas key={reset} dpr={[1, 1.5]} camera={{ position: [0, 0.25, 10.5], fov: 34 }} gl={{ alpha: true, antialias: true }}>
+            <ResponsiveCamera />
             <ambientLight intensity={1.1} />
             <directionalLight position={[3, 5, 7]} intensity={2.5} />
             <Suspense fallback={null}>
