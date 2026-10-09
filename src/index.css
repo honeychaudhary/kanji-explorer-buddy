@@ -150,6 +150,38 @@ All colors MUST be HSL.
   }
 }
 
+/* Scoped home accents leave the learning experience unchanged. */
+.home-kanji-scene {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  margin: 8px auto 16px;
+  cursor: grab;
+}
+.home-kanji-scene:active { cursor: grabbing; }
+.home-kanji-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--primary));
+  font-family: 'Noto Serif JP', serif;
+  font-size: 64px;
+  height: 270px;
+}
+.home-page .sakura-petal { opacity: 0.3; }
+.home-page [data-slot="card"] { border-radius: 8px; }
+@media (max-width: 640px) {
+  .home-kanji-scene, .home-kanji-fallback { height: 220px; }
+  .home-page h1 { font-size: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-page .sakura-container { display: none; }
+  .home-page *, .home-page *::before, .home-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
