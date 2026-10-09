@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,27 +6,32 @@ import { Navigation } from "@/components/Navigation";
 import { SakuraBackground } from "@/components/SakuraBackground";
 import { BookOpen, Target, Trophy, Users } from "lucide-react";
 
+const HomeKanjiScene = lazy(() => import("@/components/HomeKanjiScene"));
+
 const Home = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-japanese-cream/20">
+    <div className="home-page min-h-screen bg-background">
       <SakuraBackground />
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative py-20 px-4 text-center">
+      <section className="relative z-10 pt-10 pb-12 px-4 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-6xl md:text-8xl font-japanese-serif font-bold text-primary mb-6 animate-fade-in">
+          <h1 className="text-5xl md:text-6xl font-japanese-serif font-bold text-primary mb-3 animate-fade-in">
             漢字の旅
           </h1>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
             Master Japanese Kanji
           </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Embark on your journey to learn Japanese kanji with interactive stroke order animations, 
             audio pronunciation, and JLPT-structured lessons.
           </p>
+          <Suspense fallback={<div className="home-kanji-scene home-kanji-fallback" aria-hidden="true">日 学 月</div>}>
+            <HomeKanjiScene />
+          </Suspense>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8 py-6">
               <Link to="/learn">Start Learning</Link>
@@ -38,7 +44,7 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-card/50">
+      <section className="relative z-10 py-12 px-4 bg-card/50 border-y border-border/60">
         <div className="max-w-6xl mx-auto">
           <h3 className="text-3xl font-bold text-center mb-12 text-foreground">
             Why Choose Our Kanji Learning Platform?
