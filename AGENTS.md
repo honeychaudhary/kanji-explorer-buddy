@@ -2,3 +2,5 @@
 
 - Keep the home page's cosmetic 3D experience in a lazy-loaded, isolated React Three Fiber component; learning pages must not load its rendering dependencies.
 - Resolve 3D material colors from global semantic CSS tokens so the scene stays consistent with the site's theme.
+- Keep homepage landscape geometry and animated particles in the isolated home-world module; use instancing and pause rendering offscreen to preserve learning-page performance.
+- Retain an imported static landscape beneath the homepage canvas for loading, unsupported WebGL, and rendering failures so content and navigation remain usable.
