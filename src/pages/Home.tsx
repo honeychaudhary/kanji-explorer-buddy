@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Navigation } from "@/components/Navigation";
 import { SakuraBackground } from "@/components/SakuraBackground";
 import { BookOpen, Target, Trophy, Users } from "lucide-react";
+import worldFallback from "@/assets/japanese-world-fallback.jpg";
 
 const HomeKanjiScene = lazy(() => import("@/components/HomeKanjiScene"));
 
@@ -17,26 +18,28 @@ const Home = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative z-10 pt-10 pb-12 px-4 text-center">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-japanese-serif font-bold text-primary mb-3 animate-fade-in">
+      <section className="home-world-hero relative z-10">
+        <img className="home-world-backdrop" src={worldFallback} width={1536} height={1024} alt="" aria-hidden="true" />
+        <Suspense fallback={null}>
+          <HomeKanjiScene />
+        </Suspense>
+        <div className="home-world-copy">
+          <p className="home-world-eyebrow">KanjiXplorer</p>
+          <h1 className="font-japanese-serif font-bold text-primary mb-3">
             漢字の旅
           </h1>
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
             Master Japanese Kanji
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="home-world-description text-base leading-relaxed">
             Embark on your journey to learn Japanese kanji with interactive stroke order animations, 
             audio pronunciation, and JLPT-structured lessons.
           </p>
-          <Suspense fallback={<div className="home-kanji-scene home-kanji-fallback" aria-hidden="true">日 学 月</div>}>
-            <HomeKanjiScene />
-          </Suspense>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8 py-6">
+          <div className="flex flex-wrap gap-3 mt-6">
+            <Button asChild size="lg" className="text-base px-6">
               <Link to="/learn">Start Learning</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+            <Button asChild variant="outline" size="lg" className="home-world-secondary text-base px-6">
               <Link to="/about">Learn More</Link>
             </Button>
           </div>
